@@ -1,0 +1,34 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "com.github.node-gradle:gradle-node-plugin:3.2.1"
+    }
+}
+
+apply plugin: 'base'
+apply plugin: 'com.github.node-gradle.node' // gradle-node-plugin
+
+node {
+    // Version of node to use.
+    version = '12.0.0'
+
+    // Version of npm to use.
+    npmVersion = '6.4.1'
+
+    // If true, it will download node using above parameters.
+    // If false, it will try to use globally installed node.
+    download = true
+}
+
+task test(type: NpmTask) {
+    description = 'perform test'
+    dependsOn 'npmInstall'
+    args = ['test']
+}
