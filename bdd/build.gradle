@@ -1,3 +1,8 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
+
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -9,11 +14,13 @@ buildscript {
 
     dependencies {
         classpath "com.github.node-gradle:gradle-node-plugin:3.2.1"
+        classpath "com.bmuschko:gradle-docker-plugin:7.4.0"
     }
 }
 
 apply plugin: 'base'
 apply plugin: 'com.github.node-gradle.node' // gradle-node-plugin
+apply plugin: 'com.bmuschko.docker-remote-api' //read: https://bmuschko.github.io/gradle-docker-plugin/current/user-guide/
 
 node {
     // Version of node to use.
@@ -29,6 +36,26 @@ node {
 
 task test(type: NpmTask) {
     description = 'perform test'
-    dependsOn 'npmInstall'
+    dependsOn 'npmInstall','runDVWA'
+    finalizedBy 'stopDVWA'
     args = ['test']
+}
+
+task pullDVWA(type: DockerPullImage){
+    image = "sagikazarmark/dvwa:latest"
+}
+
+task provisionDVWA(type: DockerCreateContainer, dependsOn: pullDVWA){
+    targetImageId pullDVWA.getImage()
+    hostConfig.portBindings = ['8080:80']
+    hostConfig.autoRemove = true
+    hostName = 'dvwa'
+}
+
+task runDVWA(type: DockerStartContainer,dependsOn: provisionDVWA){
+  targetContainerId provisionDVWA.getContainerId()
+}
+
+task stopDVWA(type: DockerStopContainer){
+    targetContainerId runDVWA.getContainerId()
 }
