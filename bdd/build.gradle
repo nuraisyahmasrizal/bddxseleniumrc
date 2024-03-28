@@ -40,6 +40,12 @@ task test(type: NpmTask) {
     args = ['test']
 }
 
+task testreport(type: NpmTask) {
+    description = 'perform test with report'
+    dependsOn 'npmInstall'
+    args = ['run','test-report']
+}
+
 task pullDVWA(type: DockerPullImage){
     image = "sagikazarmark/dvwa:latest"
 }
