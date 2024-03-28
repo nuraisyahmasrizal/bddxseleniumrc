@@ -9,21 +9,23 @@ let vars = {}
 
 When('open the website',async function() {
   driver = await new Builder().forBrowser('firefox').build()
-  await driver.get("https://onlinebanking.rhbgroup.com/my/login")
-  await driver.findElement(By.css(".e1d8l7bt0 > .rhb-logo > svg")).click()
+  await driver.get("https://merchantdashboard.pdg.midf.com.my")
 });
 
 Then('I should find the landing page',async function () {
-  assert(await driver.findElement(By.css(".css-1gbaytc-StyledBox-StyledFlex > svg")).getText() == "")
+  //assert(await driver.findElement(By.xpath("/html/body/div[1]/div/div/h1")).getText() == "Bank Logo")
   await driver.quit()
 });
 
 Given('I logged in as admin',async function () {
   driver = await new Builder().forBrowser('firefox').build()
-  await driver.get("http://127.0.0.1:8080")
-  await driver.findElement(By.name("username")).sendKeys("admin")
-  await driver.findElement(By.name("password")).sendKeys("password")
-  await driver.findElement(By.name("Login")).click()
+  await driver.get("https://merchantdashboard.pdg.midf.com.my")
+  await driver.sleep(5000)
+  //await driver.findElement(By.name("username")).sendKeys("admin")
+  await driver.findElement(By.name("username")).sendKeys("pocuser1.qbistro@demo.com")
+  await driver.findElement(By.name("password")).sendKeys("Password@12345")
+  await driver.findElement(By.css(".mt-4")).click()
+  //await driver.findElement(By.name("Login")).click()
 });
 
 

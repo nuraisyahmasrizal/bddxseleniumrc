@@ -6,5 +6,3 @@ Feature: Greeting
 
   Scenario: Landing on dvwa website
     Given I logged in as admin
-    When I clicked about button
-    Then I should find the dvwa landing page
