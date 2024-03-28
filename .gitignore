@@ -5,3 +5,4 @@
 build
 
 bdd/node_modules
+bdd/report.html
