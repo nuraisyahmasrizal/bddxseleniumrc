@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js"
+    "test": "cucumber-js",
+    "test-report": "cucumber-js --format html > report.html"
   },
   "author": "Fazreil Amreen",
   "license": "ISC",
